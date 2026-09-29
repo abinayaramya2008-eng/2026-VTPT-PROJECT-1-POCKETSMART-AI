@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="form-wrap"><div class="card form-card">
+  <span class="kicker">Planner 01</span><h2>Home Interior Budget Planner</h2>
+  <p class="muted">Add rooms and the quantities you need. The planner keeps the recommendation total budget-aware.</p>
+  <form id="homeForm">
+    <div class="form-grid">
+      <div class="field"><label>Total budget (INR)</label><input name="budget" type="number" min="1" step="100" required></div>
+      <div class="field"><label>Style</label><select name="style"><option>modern</option><option>minimal</option><option>cozy</option><option>traditional</option></select></div>
+      <div class="field full"><label>City</label><input name="city" value="India"></div>
+      <div class="field full"><label>Notes</label><textarea name="notes" placeholder="Example: focus on low-maintenance decor"></textarea></div>
+    </div>
+    <div id="rooms"></div>
+    <div class="actions"><button class="btn secondary" type="button" onclick="addRoom()">+ Add room</button><button class="btn" type="submit">Generate plan</button></div>
+    <div class="alert" id="alert"></div>
+  </form>
+</div></section>
+<section class="section"><div class="container" id="result"></div></section>
+<script>
+let roomIndex=0;
+function addRoom(){
+ const box=document.createElement('div'); box.className='room-card'; box.dataset.index=roomIndex++;
+ box.innerHTML=`<div class="room-header"><h3>Room</h3><button class="btn danger" type="button" onclick="this.closest('.room-card').remove()">Remove</button></div><div class="form-grid"><div class="field full"><label>Room type</label><select class="room_type"><option>Living Room</option><option>Kitchen</option><option>Bedroom</option><option>Dining Room</option><option>Study Room</option></select></div><div class="field"><label>Lights</label><input class="lights" type="number" min="0" value="2"></div><div class="field"><label>Ceiling fans</label><input class="ceiling_fans" type="number" min="0" value="1"></div><div class="field"><label>Dining tables</label><input class="tables" type="number" min="0" value="0"></div><div class="field"><label>Chairs</label><input class="chairs" type="number" min="0" value="0"></div><div class="field"><label>Decor items</label><input class="decor_items" type="number" min="0" value="2"></div></div>`;
+ document.getElementById('rooms').appendChild(box);
+}
+addRoom();
+document.getElementById('homeForm').addEventListener('submit', async e=>{
+ e.preventDefault(); const form=new FormData(e.target);
+ const rooms=[...document.querySelectorAll('.room-card')].map(r=>({room_type:r.querySelector('.room_type').value,lights:Number(r.querySelector('.lights').value),ceiling_fans:Number(r.querySelector('.ceiling_fans').value),tables:Number(r.querySelector('.tables').value),chairs:Number(r.querySelector('.chairs').value),decor_items:Number(r.querySelector('.decor_items').value)}));
+ try { await requireAuth(); const result=await api('/api/generate-home',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({budget:Number(form.get('budget')),style:form.get('style'),city:form.get('city'),notes:form.get('notes'),rooms})}); renderResult(result); }
+ catch(err){showError(err.message);}
+});
+</script>
+{% endblock %}

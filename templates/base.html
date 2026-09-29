@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title or "PocketSmart AI" }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
+  <script defer src="{{ url_for('static', path='js/app.js') }}"></script>
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="/">PocketSmart AI</a>
+      <nav class="nav-links">
+        <a href="/planner/home">Home Planner</a>
+        <a href="/planner/party">Party Planner</a>
+        <a href="/planner/jewelry">Jewelry Planner</a>
+        <a href="/history">History</a>
+        <a href="/login" data-auth-link>Login</a>
+        <button class="btn danger hidden" data-logout onclick="logout()">Logout</button>
+      </nav>
+    </div>
+  </header>
+  <main>{% block content %}{% endblock %}</main>
+  <footer class="footer">
+    <div class="container">
+      <strong>PocketSmart AI</strong>
+      <p class="muted">Budget-aware planning with a Gemini-powered recommendation layer and simulated platform catalogs.</p>
+    </div>
+  </footer>
+</body>
+</html>

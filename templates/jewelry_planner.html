@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="form-wrap"><div class="card form-card">
+  <span class="kicker">Planner 03</span><h2>Jewelry Budget Planner</h2>
+  <p class="muted">Describe the occasion and style. You can optionally upload an outfit image for Gemini multimodal context.</p>
+  <form id="jewelryForm" enctype="multipart/form-data"><div class="form-grid">
+    <div class="field"><label>Budget (INR)</label><input name="budget" type="number" min="1" step="100" required></div>
+    <div class="field"><label>Occasion</label><input name="occasion" placeholder="Wedding, festival, party" required></div>
+    <div class="field"><label>Style</label><select name="style"><option>elegant</option><option>minimal</option><option>traditional</option><option>statement</option><option>modern</option></select></div>
+    <div class="field"><label>Metal preference</label><select name="metal_preference"><option>any</option><option>gold</option><option>silver</option><option>rose gold</option><option>pearl</option></select></div>
+    <div class="field"><label>Outfit color</label><input name="outfit_color" placeholder="Optional"></div>
+    <div class="field"><label>Outfit image</label><small class="muted">Accepted: JPG, JPEG, PNG, WEBP (max 5 MB)</small><input name="outfit_image" type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"></div>
+    <div class="field full"><label>Outfit description</label><textarea name="outfit_description" placeholder="Optional description of the outfit and neckline/style"></textarea></div>
+  </div><div class="actions"><button class="btn" type="submit">Generate jewelry plan</button></div><div class="alert" id="alert"></div></form>
+</div></section>
+<section class="section"><div class="container" id="result"></div></section>
+<script>
+document.getElementById('jewelryForm').addEventListener('submit',async e=>{
+ e.preventDefault(); const f=new FormData(e.target);
+ try{await requireAuth();const result=await api('/api/generate-jewelry',{method:'POST',body:f});renderResult(result);}catch(err){showError(err.message);}
+});
+</script>
+{% endblock %}

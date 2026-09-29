@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="form-wrap">
+  <div class="card form-card">
+    <span class="kicker">Get started</span>
+    <h2>Create your account</h2>
+    <form id="registerForm">
+      <div class="form-grid">
+        <div class="field full"><label>Full name</label><input name="full_name" maxlength="120"></div>
+        <div class="field full"><label>Email</label><input name="email" type="email" required></div>
+        <div class="field full"><label>Password</label><input name="password" type="password" minlength="8" required></div>
+      </div>
+      <div class="actions"><button class="btn" type="submit">Create account</button><a class="btn secondary" href="/login">Login</a></div>
+      <div class="alert" id="alert"></div>
+    </form>
+  </div>
+</section>
+<script>
+document.getElementById('registerForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const form = new FormData(e.target);
+  try { await api('/api/auth/register', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(Object.fromEntries(form))}); window.location.href='/dashboard'; }
+  catch (err) { showError(err.message); }
+});
+</script>
+{% endblock %}

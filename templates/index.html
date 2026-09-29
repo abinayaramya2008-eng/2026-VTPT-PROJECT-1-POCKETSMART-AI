@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <span class="kicker">GenAI budget assistant</span>
+      <h1>Plan smarter. Spend with a plan.</h1>
+      <p class="lead">PocketSmart AI turns a budget and a few preferences into practical plans for home interiors, parties, and jewelry selection.</p>
+      <div class="actions">
+        <a class="btn" href="/dashboard">Open dashboard</a>
+        <a class="btn secondary" href="/register">Create account</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <span class="badge">Three planners</span>
+      <h3>One app, several everyday decisions</h3>
+      <p class="muted">Home decor • Party planning • Jewelry matching</p>
+      <div class="stats">
+        <div class="stat"><span class="muted">Inputs</span><strong>Budget + preferences</strong></div>
+        <div class="stat"><span class="muted">AI</span><strong>Gemini multimodal</strong></div>
+        <div class="stat"><span class="muted">History</span><strong>Saved plans</strong></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="grid-3">
+      <a class="card feature" href="/planner/home"><div class="icon">H</div><h3>Home Interior</h3><p class="muted">Room-by-room quantities for lights, fans, tables, chairs, and decor.</p></a>
+      <a class="card feature" href="/planner/party"><div class="icon">P</div><h3>Party Planner</h3><p class="muted">Budget allocation across catering, venues, decor, and optional accommodation.</p></a>
+      <a class="card feature" href="/planner/jewelry"><div class="icon">J</div><h3>Jewelry Planner</h3><p class="muted">Occasion and style matching with optional outfit image context.</p></a>
+    </div>
+  </div>
+</section>
+{% endblock %}

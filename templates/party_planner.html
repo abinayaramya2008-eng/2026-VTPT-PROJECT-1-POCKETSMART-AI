@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="form-wrap"><div class="card form-card">
+  <span class="kicker">Planner 02</span><h2>Party Budget Planner</h2>
+  <p class="muted">Allocate a budget across food, venue, decor, and optional accommodation.</p>
+  <form id="partyForm"><div class="form-grid">
+    <div class="field"><label>Total budget (INR)</label><input name="budget" type="number" min="1" step="100" required></div>
+    <div class="field"><label>Guest count</label><input name="guests" type="number" min="1" required></div>
+    <div class="field"><label>Event type</label><select name="event_type"><option>birthday</option><option>corporate</option><option>wedding</option><option>casual</option></select></div>
+    <div class="field"><label>City</label><input name="city" value="India"></div>
+    <div class="field"><label>Venue preference</label><input name="venue_preference" value="flexible"></div>
+    <div class="field"><label>Food preference</label><input name="food_preference" value="mixed"></div>
+    <div class="field full"><label><input name="accommodation_needed" type="checkbox"> Need accommodation options</label></div>
+    <div class="field full"><label>Notes</label><textarea name="notes"></textarea></div>
+  </div><div class="actions"><button class="btn" type="submit">Generate party plan</button></div><div class="alert" id="alert"></div></form>
+</div></section>
+<section class="section"><div class="container" id="result"></div></section>
+<script>
+document.getElementById('partyForm').addEventListener('submit',async e=>{
+ e.preventDefault(); const f=new FormData(e.target); const body={budget:Number(f.get('budget')),guests:Number(f.get('guests')),event_type:f.get('event_type'),city:f.get('city'),venue_preference:f.get('venue_preference'),food_preference:f.get('food_preference'),accommodation_needed:f.get('accommodation_needed')==='on',notes:f.get('notes')};
+ try{await requireAuth();const result=await api('/api/generate-party',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});renderResult(result);}catch(err){showError(err.message);}
+});
+</script>
+{% endblock %}

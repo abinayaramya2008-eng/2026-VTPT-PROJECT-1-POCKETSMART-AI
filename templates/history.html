@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section"><div class="container"><div class="card content-card">
+<span class="kicker">Saved plans</span><h2>Recommendation history</h2>
+<div id="history" class="recommendation-list"><div class="empty">Loading...</div></div>
+</div></div></section>
+<script>
+(async()=>{
+ try{await requireAuth(); const rows=await api('/api/history'); const el=document.getElementById('history'); el.innerHTML=rows.length?rows.map(r=>`<article class="reco"><div class="reco-head"><div><span class="badge">${r.planner_type}</span><h3>${escapeHtml(r.title)}</h3></div><strong>${money(r.estimated_total)}</strong></div><p class="muted">${new Date(r.created_at).toLocaleString()}</p><details><summary>View details</summary><pre style="white-space:pre-wrap">${escapeHtml(JSON.stringify(r.result,null,2))}</pre></details><button class="btn danger" onclick="removeHistory(${r.id})">Delete</button></article>`).join(''):'<div class="empty">No saved recommendations yet.</div>'; }
+ catch(err){showError(err.message);}
+})();
+async function removeHistory(id){try{await api(`/api/history/${id}`,{method:'DELETE'});location.reload();}catch(err){showError(err.message);}}
+</script>
+{% endblock %}
